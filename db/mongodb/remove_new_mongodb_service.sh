@@ -1,6 +1,22 @@
 #!/bin/bash
 
 # mongodb 4.0.6 base
+function func_usage {
+	echo ""
+	echo "Usage: $0 (MONGO NAME) (MONGO PORT)"
+	echo ""
+	echo ""
+}
+
+if [ $# != 2 ]; then
+  func_usage
+	exit 0
+fi
+
+if [ "$MONGO_NAME" == "" ]; then
+  func_usage
+   exit 0
+fi
 
 MONGO_NAME=$1
 MONGO_PORT=$2
