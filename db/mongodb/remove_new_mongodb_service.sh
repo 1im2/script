@@ -9,13 +9,13 @@ function func_usage {
 }
 
 if [ $# != 2 ]; then
-  func_usage
+	func_usage
 	exit 0
 fi
 
 if [ "$MONGO_NAME" == "" ]; then
-  func_usage
-   exit 0
+	func_usage
+	exit 0
 fi
 
 MONGO_NAME=$1
