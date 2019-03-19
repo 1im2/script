@@ -18,6 +18,18 @@ fi
 rm -rf /var/lib/${MONGO_NAME} /var/log/${MONGO_NAME} /usr/lib/systemd/system/${MONGO_NAME}.service /etc/systemd/system/multi-user.target.wants/${MONGO_NAME}.service /usr/lib/systemd/system/${MONGO_NAME}.service* /etc/${MONGO_NAME}.conf
 
 
+yum list installed policycoreutils-python
+if [ $? != 0 ]; then
+	yum -y install policycoreutils-python.x86_64
+fi
+
+yum list installed firewalld
+if [ $? != 0 ]; then
+    yum -y install firewalld.noarch
+fi
+
+
+
 mkdir                               /var/lib/${MONGO_NAME}
 chown mongod:mongod                 /var/lib/${MONGO_NAME}
 chcon -R --reference=/var/lib/mongo /var/lib/${MONGO_NAME}
@@ -44,10 +56,17 @@ perl -pi -e "s/\/run\/mongodb\/mongod/\/run\/mongodb\/${MONGO_NAME}/g" /etc/${MO
 perl -pi -e "s/\/var\/lib\/mongo/\/var\/lib\/${MONGO_NAME}/g"          /etc/${MONGO_NAME}.conf
 chcon --reference=/etc/mongod.conf                                     /etc/${MONGO_NAME}.conf  
 
-yum -y install policycoreutils-python
-semanage port --add -t mongod_port_t -p tcp ${MONGO_PORT}
-firewall-cmd --permanent --zone=public --add-port=${MONGO_PORT}/tcp
-firewall-cmd --reload
+RLT=`semanage  port -l | grep ${MONGO_PORT}`
+if [ "${RLT}" == "" ]; then
+	semanage port --add -t mongod_port_t -p tcp ${MONGO_PORT}
+fi
+
+RLT=`firewall-cmd --list-ports | grep ${MONGO_PORT}`
+if [ "${RLT}" == "" ]; then
+	firewall-cmd --permanent --zone=public --add-port=${MONGO_PORT}/tcp
+	firewall-cmd --reload
+fi
+
 
 echo "에러 발생시 /var/log/message 파일 및 /var/log/${MONGO_NAME} 디렉터리 아래 로그 확인"
 echo "/etc/${MONGO_NAME}.conf 수정 해야함 그리고 다음 명령어 실행"
