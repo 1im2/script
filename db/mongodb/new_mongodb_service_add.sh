@@ -42,7 +42,7 @@ perl -pi -e "s/\/run\/mongodb\/mongod/\/run\/mongodb\/${MONGO_NAME}/g" /etc/${MO
 perl -pi -e "s/\/var\/lib\/mongo/\/var\/lib\/${MONGO_NAME}/g"          /etc/${MONGO_NAME}.conf
 chcon --reference=/etc/mongod.conf                                     /etc/${MONGO_NAME}.conf  
 
-yum install policycoreutils-python
+yum -y install policycoreutils-python
 semanage port --add -t mongod_port_t -p tcp ${MONGO_PORT}
 firewall-cmd --permanent --zone=public --add-port=${MONGO_PORT}/tcp
 firewall-cmd --reload
