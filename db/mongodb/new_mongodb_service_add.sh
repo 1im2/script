@@ -29,14 +29,20 @@ chcon --reference=/usr/lib/systemd/system/mongod.service /usr/lib/systemd/system
 cd /etc/systemd/system/multi-user.target.wants
 ln -s /usr/lib/systemd/system/${MONGO_NAME}.service
 
-perl -pi.orig -e 's/MongoDB Database Server/${MONGO_DESC}/g' /usr/lib/systemd/system/${MONGO_NAME}.service
-perl -pi -e 's/OPTIONS=/OPTIONS=${MONGO_RUNNING_OPTION} /g' /usr/lib/systemd/system/${MONGO_NAME}.service
-perl -pi -e 's/mongod.conf/${MONGO_NAME}.conf/g' /usr/lib/systemd/system/${MONGO_NAME}.service
-perl -pi -e 's/mongod.pid/${MONGO_NAME}.pid/g' /usr/lib/systemd/system/${MONGO_NAME}.service
+perl -pi.orig -e "s/MongoDB Database Server/${MONGO_DESC}/g" /usr/lib/systemd/system/${MONGO_NAME}.service
+perl -pi -e "s/OPTIONS=/OPTIONS=${MONGO_RUNNING_OPTION} /g" /usr/lib/systemd/system/${MONGO_NAME}.service
+perl -pi -e "s/mongod.conf/${MONGO_NAME}.conf/g" /usr/lib/systemd/system/${MONGO_NAME}.service
+perl -pi -e "s/mongod.pid/${MONGO_NAME}.pid/g" /usr/lib/systemd/system/${MONGO_NAME}.service
 
-cp  /etc/mongod.conf /etc/${MONGO_NAME}.conf
-perl -pi -e 's/27017/${MONGO_PORT}/g' /etc/${MONGO_NAME}.conf
 chcon --reference=/etc/mongod.conf /etc/${MONGO_NAME}.conf
+cp  /etc/mongod.conf /etc/${MONGO_NAME}.conf
+perl -pi -e "s/27017/${MONGO_PORT}/g" /etc/${MONGO_NAME}.conf
+perl -pi -e "s/mongod.conf/${MONGO_NAME}.conf/g" /etc/${MONGO_NAME}.conf
+perl -pi -e "s/\/log\/mongodb\/mongod/\/log\/mongodb\/${MONGO_NAME}/g" /etc/${MONGO_NAME}.conf
+perl -pi -e "s/\/run\/mongodb\/mongod/\/run\/mongodb\/${MONGO_NAME}/g" /etc/${MONGO_NAME}.conf
+perl -pi -e "s/\/var\/lib\/mongo/\/var\/lib\/${MONGO_NAME}/g" /etc/${MONGO_NAME}.conf
+chcon --reference=/etc/mongod.conf /etc/${MONGO_NAME}.conf
+
 
 yum install policycoreutils-python
 semanage port -a -t mongod_port_t -p tcp ${MONGO_PORT}
