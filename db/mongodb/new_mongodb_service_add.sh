@@ -22,7 +22,7 @@ chcon -R --reference=/var/lib/mongo /var/lib/${MONGO_NAME}
 
 mkdir /var/log/${MONGO_NAME}
 chown mongod:mongod /var/log/${MONGO_NAME}
-chcon -R --reference=/var/log/mongo /var/log/${MONGO_NAME}
+chcon -R --reference=/var/log/mongodb /var/log/${MONGO_NAME}
 
 cp /usr/lib/systemd/system/mongod.service /usr/lib/systemd/system/${MONGO_NAME}.service
 chcon --reference=/usr/lib/systemd/system/mongod.service /usr/lib/systemd/system/${MONGO_NAME}.service
