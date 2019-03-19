@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# mongodb 4.0.6 base
+
 MONGO_NAME=$1
 MONGO_PORT=$2
 MONGO_DESC=$3
