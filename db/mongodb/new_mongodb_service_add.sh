@@ -10,6 +10,7 @@ MONGO_RUNNING_OPTION=$4
 if [ $# != 4 ]; then
 	echo ""
 	echo "Usage: $0 (MONGO NAME) (MONGO PORT) (MONGO DESCIPTION with double queto) (MONGO_RUNNING_OPTION with double queto)"
+	echo "    config server need MONGO_RUNNING_OPTION like: --configsvr"
 	echo ""
 	echo ""
 	exit 0
