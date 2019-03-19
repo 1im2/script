@@ -13,7 +13,7 @@ if [ $# != 2 ]; then
 	exit 0
 fi
 
-if [ "$MONGO_NAME" == "" ]; then
+if [ "$1" == "" ]; then
 	func_usage
 	exit 0
 fi
