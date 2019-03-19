@@ -1,0 +1,29 @@
+set bg=dark
+set ts=3
+set sw=3
+set si
+set ruler
+set hlsearch
+
+filetype plugin on
+set tags+=/usr/include/tags
+set tags+=tags
+set omnifunc=ccomplete
+
+set cursorline
+" hi CursorLine ctermbg=8 ctermfg=15 "8 = dark gray, 15 = white
+
+if has("autocmd")
+    " When editing a file, always jump to the last cursor position
+    autocmd BufReadPost *
+    \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+    \   exe "normal g'\"" |
+    \ endif
+endif
+
+
+" lightline 을 위한 설정
+set laststatus=2
+
+
+map z] v%zfk<CR>
