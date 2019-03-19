@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# mongodb 4.0.6 base
+
 function yumcheckinstall {
     GREPRESULT=`yum list installed | grep $1`
     if [ "${GREPRESULT}" == "" ]; then
